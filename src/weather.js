@@ -11,7 +11,7 @@ class weather{
          
         try{
         const res = await axios(`http://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.long}&appid=304905f58af3f569e02ff981ca359bf0`);
-        this.result=Math.floor(res.data.main.temp-273.15);
+        this.result=Math.ceil(res.data.main.temp-273.15);
     }
         catch(error){
             console.log('Hello');

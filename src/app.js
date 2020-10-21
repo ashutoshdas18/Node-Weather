@@ -1,23 +1,27 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const hbs = require('hbs');
 const lib=require('./weather')
 const direction=require('./lat')
+
 const state={}
 
 const app = express();
 const port = process.env.PORT || 3000
-const dirName=path.join(__dirname,'/assets/hbs');
-
 app.set('view engine','hbs')
+const dirName=path.join(__dirname,'/assets/hbs');
 app.set('views',dirName);
+
+const partialDirectory=path.join(__dirname,'/assets/partials');
+hbs.registerPartials(partialDirectory);
+
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,'/assets')));
 
 app.get('/', (req, res) => {
   res.render('index');
-  console.log('Hello')
 
 })
 
@@ -30,7 +34,11 @@ app.post('/products', (req, res) => {
     const long=state.newElement.long;
     state.search=new lib.weather(lat,long);
      await state.search.getResult();
-    res.send(`The Current temperature in ${state.newElement.city} is ${state.search.result} degree celcius`);
+    res.render('weather',{
+      temp:state.search.result,
+      loc:state.newElement.city
+    })
+    // `The Current temperature in ${state.newElement.city} is ${state.search.result} degree celcius`);
 
  
 })();
