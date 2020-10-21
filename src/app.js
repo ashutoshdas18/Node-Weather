@@ -1,4 +1,3 @@
-console.log('Hello')
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -7,7 +6,7 @@ const direction=require('./lat')
 const state={}
 
 const app = express();
-
+const port = process.env.PORT || 3000
 const dirName=path.join(__dirname,'/assets/hbs');
 
 app.set('view engine','hbs')
@@ -39,6 +38,6 @@ app.post('/products', (req, res) => {
 
 
 
-app.listen(3000, () => {
-  console.log(`Server started on port`);
+app.listen(port, () => {
+  console.log(`Server started on ${port}`);
 });
